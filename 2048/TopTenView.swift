@@ -10,6 +10,7 @@ import UIKit
 
 class TopTenView: UIViewController {
     
+    //显示排名数据
     @IBOutlet weak var r0: UILabel!
     @IBOutlet weak var r1: UILabel!
     @IBOutlet weak var r2: UILabel!
@@ -23,6 +24,7 @@ class TopTenView: UIViewController {
     
     @IBOutlet weak var test: UILabel!
     
+    //颜色填充
     func filldata(t:UILabel , rank:Int ,max:Int , sum:Int , step:Int ) {
         
         t.text = String(rank)+"  |  "+String(max)+"  |  "+String(sum)+"  |  "+String(step)
@@ -58,6 +60,7 @@ class TopTenView: UIViewController {
         }
     }
 
+    //取出存储的数据
     func show(){
         let TTmax:[Int] = UserDefaults.standard.array(forKey: "max") as! [Int]
         let TTsum:[Int] = UserDefaults.standard.array(forKey: "sum") as! [Int]

@@ -10,7 +10,7 @@ import UIKit
 import AudioToolbox
 
 class ViewController: UIViewController {
-    
+    //外挂（直接成功通过）
     @IBAction func Gua(_ sender: AnyObject) {
         data = [ [0,0,0,0],
                  [0,0,1024,0],
@@ -22,11 +22,16 @@ class ViewController: UIViewController {
         step.text = ""
         score.text = ""
     }
+    
+    //存储积分排名的结构体
     struct TT{
-        var steps,max,score:Int
+        var steps,max,score:Int   //分别是步数、最大值、最终得分
     }
+    
+    //存储数组
     var TopTen:[TT]=[TT(steps:0,max:0,score:0)]
     
+    //结构体排序
     func cmp(a:TT,b:TT)->Bool{
         if a.max != b.max {return a.max>b.max}
         if a.score != b.score {return a.score>b.score}
@@ -119,7 +124,6 @@ class ViewController: UIViewController {
         filldata(t: l14, k: data[3][2])
         filldata(t: l15, k: data[3][3])
         step.text = String(steps)
-        
     }
     //数字移动
     func up_remove_blank(){
@@ -246,11 +250,10 @@ class ViewController: UIViewController {
         step.text = ""
         score.text = ""
     }
-    
-    
     @IBAction func Replay(_ sender: AnyObject) {
         replay()
     }
+    
     //音效模块
     func playsound (){
         var sId:SystemSoundID = 0
@@ -259,6 +262,7 @@ class ViewController: UIViewController {
         AudioServicesCreateSystemSoundID(sURL, &sId)
         AudioServicesPlaySystemSound(sId)
     }
+    
     //判断是否有空位
     func judge()->Bool{
         var flag:Bool = false
@@ -439,7 +443,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         update()
+        
+        //由于数据量不大，所以采用了 UserDefaults 存储
         let J = UserDefaults.standard.array(forKey: "max")
+        //第一次打开游戏，J 为空，所以要初始化，以后再打开则不需要。
         if(J==nil){
             for _ in 0..<10{
                 TopTen.append(TT(steps:0,max:0,score:0))
@@ -452,11 +459,13 @@ class ViewController: UIViewController {
                 TTsum.append(TopTen[i].score)
                 TTstep.append(TopTen[i].steps)
             }
+            //UserDefaults 是不能存储结构体的，所以要分开存起来
             UserDefaults.standard.set(TTstep, forKey: "step")
             UserDefaults.standard.set(TTsum, forKey: "sum")
             UserDefaults.standard.set(TTmax, forKey: "max")
         }
         else{
+            //二次打开，则直接存储当次玩的数据。
             var TTmax:[Int]=UserDefaults.standard.array(forKey: "max") as! [Int]
             var TTsum:[Int]=UserDefaults.standard.array(forKey: "sum") as! [Int]
             var TTstep:[Int]=UserDefaults.standard.array(forKey: "step") as! [Int]
